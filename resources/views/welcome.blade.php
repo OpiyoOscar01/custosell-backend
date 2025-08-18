@@ -48,43 +48,48 @@
     </header>
 
     <!-- Table of Contents -->
-    <nav class="bg-white shadow-sm py-6 px-6">
-        <div class="max-w-7xl mx-auto">
-            <h3 class="text-xl font-bold mb-4 text-gray-800">
-                <i class="fas fa-list mr-2"></i>
-                Table of Contents
-            </h3>
-            <div class="grid md:grid-cols-3 gap-4">
-                <div>
-                    <h4 class="font-semibold text-blue-600 mb-2">System Overview</h4>
-                    <ul class="space-y-1 text-sm">
-                        <li><a href="#architecture" class="hover:text-blue-600">Architecture</a></li>
-                        <li><a href="#key-features" class="hover:text-blue-600">Key Features</a></li>
-                        <li><a href="#tech-stack" class="hover:text-blue-600">Tech Stack</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-blue-600 mb-2">Database Modules</h4>
-                    <ul class="space-y-1 text-sm">
-                        <li><a href="#core-system" class="hover:text-blue-600">Core System</a></li>
-                        <li><a href="#product-management" class="hover:text-blue-600">Product Management</a></li>
-                        <li><a href="#inventory-management" class="hover:text-blue-600">Inventory Management</a></li>
-                        <li><a href="#sales-pos" class="hover:text-blue-600">Sales & POS</a></li>
-                        <li><a href="#financial" class="hover:text-blue-600">Financial Management</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-blue-600 mb-2">Implementation</h4>
-                    <ul class="space-y-1 text-sm">
-                        <li><a href="#relationships" class="hover:text-blue-600">Table Relationships</a></li>
-                        <li><a href="#business-logic" class="hover:text-blue-600">Business Logic</a></li>
-                        <li><a href="#api-guidelines" class="hover:text-blue-600">API Guidelines</a></li>
-                        <li><a href="#best-practices" class="hover:text-blue-600">Best Practices</a></li>
-                    </ul>
-                </div>
+   <nav class="bg-white shadow-sm py-6 px-6">
+    <div class="max-w-7xl mx-auto">
+        <h3 class="text-xl font-bold mb-4 text-gray-800">
+            <i class="fas fa-list mr-2"></i>
+            Table of Contents
+        </h3>
+        <div class="grid md:grid-cols-3 gap-4">
+            <div>
+                <h4 class="font-semibold text-blue-600 mb-2">System Overview</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="#architecture" class="hover:text-blue-600">Architecture</a></li>
+                    <li><a href="#key-features" class="hover:text-blue-600">Key Features</a></li>
+                    <li><a href="#tech-stack" class="hover:text-blue-600">Tech Stack</a></li>
+                    <!-- 🔗 New: Software Design Document -->
+                    <li><a href="{{ route('design-doc') }}" class="hover:text-blue-600 text-blue-500">
+                        <i class="fas fa-file-alt mr-1"></i> Software Design Document
+                    </a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-blue-600 mb-2">Database Modules</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="#core-system" class="hover:text-blue-600">Core System</a></li>
+                    <li><a href="#product-management" class="hover:text-blue-600">Product Management</a></li>
+                    <li><a href="#inventory-management" class="hover:text-blue-600">Inventory Management</a></li>
+                    <li><a href="#sales-pos" class="hover:text-blue-600">Sales & POS</a></li>
+                    <li><a href="#financial" class="hover:text-blue-600">Financial Management</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-blue-600 mb-2">Implementation</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="#relationships" class="hover:text-blue-600">Table Relationships</a></li>
+                    <li><a href="#business-logic" class="hover:text-blue-600">Business Logic</a></li>
+                    <li><a href="#api-guidelines" class="hover:text-blue-600">API Guidelines</a></li>
+                    <li><a href="#best-practices" class="hover:text-blue-600">Best Practices</a></li>
+                </ul>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <main class="max-w-7xl mx-auto px-6 py-8">
 
