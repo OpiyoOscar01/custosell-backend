@@ -194,7 +194,7 @@ class ProjectController extends BaseApiController
 
             $user = $request->user();
             $workspaceId = $user->workspaces()->first()?->id ?? 1;
-
+            
             $allProjects = $this->projectService->getAllProjects($workspaceId);
             $activeProjects = $this->projectService->getActiveProjects($workspaceId);
 

@@ -389,7 +389,8 @@ class TeamController extends Controller
     {
         Gate::authorize('viewAny', Team::class);
 
-        $query = Team::with(['workspace', 'leader', 'members']);
+        $query = Team::with(['workspace', 'leader', 'members'])
+            ->where('status', 'active');
 
         // Only show teams from user's workspaces if not admin
         if (!$request->user()->hasRole('admin')) {

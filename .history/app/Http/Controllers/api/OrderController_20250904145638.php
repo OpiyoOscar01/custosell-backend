@@ -35,8 +35,7 @@ class OrderController extends BaseApiController
         try {
             $this->authorize('viewAny', Order::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $status = $request->get('status');
             $customerId = $request->get('customer_id');
             $search = $request->get('search');
@@ -171,8 +170,7 @@ class OrderController extends BaseApiController
         try {
             $this->authorize('viewAny', Order::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $orders = $this->orderService->getPendingOrders($workspaceId);
 
             return $this->successResponse(
@@ -223,8 +221,7 @@ class OrderController extends BaseApiController
         try {
             $this->authorize('viewAny', Order::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $orders = $this->orderService->getOrdersByStatus('active', $workspaceId);
 
             return $this->successResponse(
@@ -244,8 +241,7 @@ class OrderController extends BaseApiController
         try {
             $this->authorize('viewAny', Order::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $orders = $this->orderService->getOrdersByStatus($status, $workspaceId);
 
             return $this->successResponse(
@@ -265,8 +261,7 @@ class OrderController extends BaseApiController
         try {
             $this->authorize('viewAny', Order::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $allOrders = $this->orderService->getAllOrders($workspaceId);
             $pendingOrders = $this->orderService->getPendingOrders($workspaceId);
 

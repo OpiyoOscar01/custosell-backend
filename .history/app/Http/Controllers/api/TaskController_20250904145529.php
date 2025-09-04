@@ -35,8 +35,7 @@ class TaskController extends BaseApiController
         try {
             $this->authorize('viewAny', Task::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $status = $request->get('status');
             $projectId = $request->get('project_id');
             $assigneeId = $request->get('assignee_id');
@@ -225,9 +224,8 @@ class TaskController extends BaseApiController
         try {
             $this->authorize('viewAny', Task::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
-            $tasks = $this->taskService->getTasksByStatus('active', $workspaceId);
+            $workspaceId = $request->user()->current_workspace_id;
+            $tasks = $this->taskService->getActiveTasks($workspaceId);
 
             return $this->successResponse(
                 TaskResource::collection($tasks),
@@ -246,8 +244,7 @@ class TaskController extends BaseApiController
         try {
             $this->authorize('viewAny', Task::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $tasks = $this->taskService->getTasksByStatus($status, $workspaceId);
 
             return $this->successResponse(

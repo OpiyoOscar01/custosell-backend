@@ -43,11 +43,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout-all', [AuthController::class, 'logoutAll']);
     });
 
-    // User profile routes  
-    Route::prefix('user')->group(function () {
-        Route::get('profile', [AuthController::class, 'profile']);
-    });
-
     // Business entity routes with permission middleware
     Route::prefix('categories')->group(function () {
         Route::get('active', [CategoryController::class, 'active']);
@@ -97,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('orders', OrderController::class);
 
     // Invoice management routes
+    Route::apiResource('invoices', InvoiceController::class);
     Route::prefix('invoices')->group(function () {
         Route::get('active', [InvoiceController::class, 'active']);
         Route::get('by-status/{status}', [InvoiceController::class, 'byStatus']);
@@ -104,42 +100,37 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('overdue', [InvoiceController::class, 'overdue']);
         Route::post('{id}/send-email', [InvoiceController::class, 'sendEmail']);
     });
-    Route::apiResource('invoices', InvoiceController::class);
 
     // Company management routes
+    Route::apiResource('companies', CompanyController::class);
     Route::prefix('companies')->group(function () {
         Route::get('active', [CompanyController::class, 'active']);
         Route::get('stats', [CompanyController::class, 'stats']);
         Route::get('search', [CompanyController::class, 'search']);
     });
-    Route::apiResource('companies', CompanyController::class);
 
     // Branch management routes
+    Route::apiResource('branches', BranchController::class);
     Route::prefix('branches')->group(function () {
         Route::get('active', [BranchController::class, 'active']);
         Route::get('warehouses', [BranchController::class, 'warehouses']);
         Route::get('pos-enabled', [BranchController::class, 'posEnabled']);
         Route::get('managed-by', [BranchController::class, 'managedBy']);
     });
-    Route::apiResource('branches', BranchController::class);
 
     // Brand management routes
+    Route::apiResource('brands', BrandController::class);
     Route::prefix('brands')->group(function () {
         Route::get('active', [BrandController::class, 'active']);
     });
-    Route::apiResource('brands', BrandController::class);
 
     // Unit management routes
+    Route::apiResource('units', UnitController::class);
     Route::prefix('units')->group(function () {
         Route::get('active', [UnitController::class, 'active']);
     });
-    Route::apiResource('units', UnitController::class);
 
     // Workspace management routes
-    Route::prefix('workspaces')->group(function () {
-        Route::get('active', [WorkspaceController::class, 'active']);
-        Route::get('current', [WorkspaceController::class, 'current']);
-    });
     Route::apiResource('workspaces', WorkspaceController::class);
     Route::prefix('workspaces/{workspace}')->group(function () {
         Route::get('members', [WorkspaceController::class, 'members']);
@@ -151,9 +142,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Team management routes
-    Route::prefix('teams')->group(function () {
-        Route::get('active', [TeamController::class, 'active']);
-    });
     Route::apiResource('teams', TeamController::class);
     Route::prefix('teams/{team}')->group(function () {
         Route::get('members', [TeamController::class, 'members']);

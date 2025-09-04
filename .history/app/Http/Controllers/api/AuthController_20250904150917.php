@@ -152,35 +152,31 @@ class AuthController extends Controller
     {
         $user = $request->user();
         
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                    'avatar' => $user->avatar,
-                    'employee_id' => $user->employee_id,
-                    'date_of_birth' => $user->date_of_birth,
-                    'gender' => $user->gender,
-                    'address' => $user->address,
-                    'city' => $user->city,
-                    'state' => $user->state,
-                    'country' => $user->country,
-                    'postal_code' => $user->postal_code,
-                    'timezone' => $user->timezone,
-                    'locale' => $user->locale,
-                    'is_active' => $user->is_active,
-                    'email_verified_at' => $user->email_verified_at,
-                    'last_login_at' => $user->last_login_at,
-                    'created_at' => $user->created_at,
-                    'updated_at' => $user->updated_at,
-                ]
-            ],
-            'message' => 'Profile retrieved successfully'
-        ]);
+        return $this->successResponse([
+            'user' => [
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'avatar' => $user->avatar,
+                'employee_id' => $user->employee_id,
+                'date_of_birth' => $user->date_of_birth,
+                'gender' => $user->gender,
+                'address' => $user->address,
+                'city' => $user->city,
+                'state' => $user->state,
+                'country' => $user->country,
+                'postal_code' => $user->postal_code,
+                'timezone' => $user->timezone,
+                'locale' => $user->locale,
+                'is_active' => $user->is_active,
+                'email_verified_at' => $user->email_verified_at,
+                'last_login_at' => $user->last_login_at,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+            ]
+        ], 'Profile retrieved successfully');
     }
 
     /**

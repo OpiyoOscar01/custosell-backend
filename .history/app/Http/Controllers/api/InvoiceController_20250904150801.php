@@ -171,8 +171,7 @@ class InvoiceController extends BaseApiController
         try {
             $this->authorize('viewAny', Invoice::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $invoices = $this->invoiceService->getOverdueInvoices($workspaceId);
 
             return $this->successResponse(

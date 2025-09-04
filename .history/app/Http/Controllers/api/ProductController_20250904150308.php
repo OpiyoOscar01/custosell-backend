@@ -245,12 +245,7 @@ class ProductController extends BaseApiController
             $workspaceId = $user->workspaces()->first()?->id ?? 1;
 
             if (empty($search)) {
-                // Return all products if no search query provided
-                $products = $this->productService->getActiveProducts($workspaceId);
-                return $this->successResponse(
-                    ProductResource::collection($products),
-                    'All products retrieved successfully'
-                );
+                return $this->errorResponse('Search query is required', 400);
             }
 
             $products = $this->productService->searchProducts($search, $workspaceId);

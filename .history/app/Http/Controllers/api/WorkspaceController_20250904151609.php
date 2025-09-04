@@ -280,7 +280,7 @@ class WorkspaceController extends Controller
     {
         Gate::authorize('viewAny', Workspace::class);
 
-        $query = Workspace::with(['owner', 'users']);
+        $query = Workspace::where('status', 'active');
 
         // Filter by user's workspaces if not admin
         if (!$request->user()->hasRole('admin')) {

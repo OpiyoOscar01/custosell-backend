@@ -43,11 +43,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout-all', [AuthController::class, 'logoutAll']);
     });
 
-    // User profile routes  
-    Route::prefix('user')->group(function () {
-        Route::get('profile', [AuthController::class, 'profile']);
-    });
-
     // Business entity routes with permission middleware
     Route::prefix('categories')->group(function () {
         Route::get('active', [CategoryController::class, 'active']);
@@ -130,16 +125,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('brands', BrandController::class);
 
     // Unit management routes
+    Route::apiResource('units', UnitController::class);
     Route::prefix('units')->group(function () {
         Route::get('active', [UnitController::class, 'active']);
     });
-    Route::apiResource('units', UnitController::class);
 
     // Workspace management routes
-    Route::prefix('workspaces')->group(function () {
-        Route::get('active', [WorkspaceController::class, 'active']);
-        Route::get('current', [WorkspaceController::class, 'current']);
-    });
     Route::apiResource('workspaces', WorkspaceController::class);
     Route::prefix('workspaces/{workspace}')->group(function () {
         Route::get('members', [WorkspaceController::class, 'members']);
@@ -151,9 +142,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Team management routes
-    Route::prefix('teams')->group(function () {
-        Route::get('active', [TeamController::class, 'active']);
-    });
     Route::apiResource('teams', TeamController::class);
     Route::prefix('teams/{team}')->group(function () {
         Route::get('members', [TeamController::class, 'members']);

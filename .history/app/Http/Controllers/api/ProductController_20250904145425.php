@@ -35,8 +35,7 @@ class ProductController extends BaseApiController
         try {
             $this->authorize('viewAny', Product::class);
 
-            $user = $request->user();
-            $workspaceId = $request->get('workspace_id') ?? $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->get('workspace_id');
             $categoryId = $request->get('category_id');
             $brandId = $request->get('brand_id');
             $search = $request->get('search');
@@ -179,8 +178,7 @@ class ProductController extends BaseApiController
         try {
             $this->authorize('viewAny', Product::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $products = $this->productService->getLowStockProducts($workspaceId);
 
             return $this->successResponse(
@@ -219,8 +217,7 @@ class ProductController extends BaseApiController
         try {
             $this->authorize('viewAny', Product::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $products = $this->productService->getActiveProducts($workspaceId);
 
             return $this->successResponse(
@@ -241,16 +238,10 @@ class ProductController extends BaseApiController
             $this->authorize('viewAny', Product::class);
 
             $search = $request->get('q', '');
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
 
             if (empty($search)) {
-                // Return all products if no search query provided
-                $products = $this->productService->getActiveProducts($workspaceId);
-                return $this->successResponse(
-                    ProductResource::collection($products),
-                    'All products retrieved successfully'
-                );
+                return $this->errorResponse('Search query is required', 400);
             }
 
             $products = $this->productService->searchProducts($search, $workspaceId);

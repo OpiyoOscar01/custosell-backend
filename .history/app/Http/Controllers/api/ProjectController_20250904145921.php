@@ -35,11 +35,14 @@ class ProjectController extends BaseApiController
         try {
             $this->authorize('viewAny', Project::class);
 
-            $user = $request->user();
-            $workspaceId = $request->get('workspace_id') ?? $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->get('workspace_id');
             $status = $request->get('status');
             $teamId = $request->get('team_id');
             $search = $request->get('search');
+
+            if (!$workspaceId) {
+                return $this->errorResponse('Workspace ID is required', 400);
+            }
 
             if ($search) {
                 $projects = $this->projectService->searchProjects($search, $workspaceId);
@@ -171,8 +174,7 @@ class ProjectController extends BaseApiController
         try {
             $this->authorize('viewAny', Project::class);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            $workspaceId = $request->user()->current_workspace_id;
             $projects = $this->projectService->getActiveProjects($workspaceId);
 
             return $this->successResponse(
@@ -187,23 +189,18 @@ class ProjectController extends BaseApiController
     /**
      * Get project statistics.
      */
-    public function statistics(Request $request): JsonResponse
+    public function statistics(int $id): JsonResponse
     {
         try {
-            $this->authorize('viewAny', Project::class);
+            $project = $this->projectService->getProjectById($id);
 
-            $user = $request->user();
-            $workspaceId = $user->workspaces()->first()?->id ?? 1;
+            if (!$project) {
+                return $this->errorResponse('Project not found', 404);
+            }
 
-            $allProjects = $this->projectService->getAllProjects($workspaceId);
-            $activeProjects = $this->projectService->getActiveProjects($workspaceId);
+            $this->authorize('view', $project);
 
-            $stats = [
-                'total_projects' => $allProjects->count(),
-                'active_projects' => $activeProjects->count(),
-                'completed_projects' => $allProjects->where('status', 'completed')->count(),
-                'in_progress_projects' => $allProjects->where('status', 'in_progress')->count(),
-            ];
+            $stats = $this->projectService->getProjectStatistics($id);
 
             return $this->successResponse(
                 $stats,
