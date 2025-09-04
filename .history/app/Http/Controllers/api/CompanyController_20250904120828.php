@@ -1,0 +1,228 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use Exception;
+use App\Models\Company;
+use Illuminate\Http\Request;
+use App\Services\CompanyService;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\CompanyResource;
+use App\Http\Requests\StoreCompanyRequest;
+use App\Http\Requests\UpdateCompanyRequest;
+
+class CompanyController extends BaseApiController
+{
+    protected $companyService;
+
+    public function __construct(CompanyService $companyService)
+    {
+        parent::__construct();
+        $this->companyService = $companyService;
+
+        // Apply permission middleware
+        $this->middleware('permission:view-companies')->only(['index', 'show']);
+        $this->middleware('permission:create-companies')->only(['store']);
+        $this->middleware('permission:update-companies')->only(['update']);
+        $this->middleware('permission:delete-companies')->only(['destroy']);
+    }
+
+    /**
+     * Display a listing of companies
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $this->authorize('viewAny', Company::class);
+        
+        try {
+            $companies = $this->companyService->getAllCompanies();
+            
+            return $this->successResponse(
+                $companies,
+                'Companies retrieved successfully'
+            );
+        } catch (Exception $e) {
+            return $this->errorResponse(
+                'Failed to retrieve companies: ' . $e->getMessage(),
+                500
+            );
+        }
+    }
+
+    /**
+     * Store a newly created company
+     */
+    public function store(StoreCompanyRequest $request): JsonResponse
+    {
+        try {
+            $company = $this->companyService->createCompany($request->validated());
+            
+            return $this->successResponse(
+                $company,
+                'Company created successfully',
+                201
+            );
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create company',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Display the specified company
+     */
+    public function show(int $id): JsonResponse
+    {
+        try {
+            $company = $this->companyService->getCompanyById($id);
+            
+            if (!$company) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Company not found'
+                ], 404);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'data' => $company,
+                'message' => 'Company retrieved successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve company',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update the specified company
+     */
+    public function update(UpdateCompanyRequest $request, int $id): JsonResponse
+    {
+        try {
+            $updated = $this->companyService->updateCompany($id, $request->validated());
+            
+            if (!$updated) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Company not found'
+                ], 404);
+            }
+            
+            $company = $this->companyService->getCompanyById($id);
+            
+            return response()->json([
+                'success' => true,
+                'data' => $company,
+                'message' => 'Company updated successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update company',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Remove the specified company
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        try {
+            $deleted = $this->companyService->deleteCompany($id);
+            
+            if (!$deleted) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Company not found'
+                ], 404);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Company deleted successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete company',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get active companies
+     */
+    public function active(): JsonResponse
+    {
+        try {
+            $companies = $this->companyService->getActiveCompanies();
+            
+            return response()->json([
+                'success' => true,
+                'data' => $companies,
+                'message' => 'Active companies retrieved successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve active companies',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get companies with statistics
+     */
+    public function stats(): JsonResponse
+    {
+        try {
+            $companies = $this->companyService->getCompaniesWithStats();
+            
+            return response()->json([
+                'success' => true,
+                'data' => $companies,
+                'message' => 'Company statistics retrieved successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve company statistics',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Search companies
+     */
+    public function search(Request $request): JsonResponse
+    {
+        try {
+            $query = $request->get('q', '');
+            $companies = $this->companyService->searchCompanies($query);
+            
+            return response()->json([
+                'success' => true,
+                'data' => $companies,
+                'message' => 'Company search completed successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to search companies',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+}
