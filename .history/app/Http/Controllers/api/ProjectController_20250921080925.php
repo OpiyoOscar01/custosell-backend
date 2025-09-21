@@ -104,7 +104,7 @@ class ProjectController extends BaseApiController
     }
 
     /**
-     * Updating the specified project.
+     * Update the specified project.
      */
     public function update(UpdateProjectRequest $request, int $id): JsonResponse
     {
@@ -135,7 +135,7 @@ class ProjectController extends BaseApiController
     }
 
     /**
-     * Removing the specified project.
+     * Remove the specified project.
      */
     public function destroy(int $id): JsonResponse
     {
@@ -164,7 +164,7 @@ class ProjectController extends BaseApiController
     }
 
     /**
-     * Getting active projects.
+     * Get active projects.
      */
     public function active(Request $request): JsonResponse
     {
@@ -185,7 +185,7 @@ class ProjectController extends BaseApiController
     }
 
     /**
-     * Getting project statistics.
+     * Get project statistics.
      */
     public function statistics(Request $request): JsonResponse
     {
@@ -215,7 +215,7 @@ class ProjectController extends BaseApiController
     }
 
     /**
-     * Getting projects by status.
+     * Get projects by status.
      */
     public function byStatus(Request $request, string $status): JsonResponse
     {
